@@ -1,3 +1,7 @@
 {
-  "extends": ["codex"]
+  "extends": ["codex"],
+  "rules": {
+    "jsdoc/no-undefined-types": "off",
+    "quotes": ["error", "double"]
+  }
 }

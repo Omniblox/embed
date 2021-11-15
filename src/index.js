@@ -1,6 +1,6 @@
-import SERVICES from './services';
-import './index.css';
-import { debounce } from 'debounce';
+import SERVICES from "./services";
+import "./index.css";
+import { debounce } from "debounce";
 
 /**
  * @typedef {object} EmbedData
@@ -67,10 +67,10 @@ export default class Embed {
    */
   set data(data) {
     if (!(data instanceof Object)) {
-      throw Error('Embed Tool data should be object');
+      throw Error("Embed Tool data should be object");
     }
 
-    const { service, source, embed, width, height, caption = '' } = data;
+    const { service, source, embed, width, height, caption = "" } = data;
 
     this._data = {
       service: service || this.data.service,
@@ -78,7 +78,7 @@ export default class Embed {
       embed: embed || this.data.embed,
       width: width || this.data.width,
       height: height || this.data.height,
-      caption: caption || this.data.caption || '',
+      caption: caption || this.data.caption || "",
     };
 
     const oldView = this.element;
@@ -95,7 +95,7 @@ export default class Embed {
     if (this.element) {
       const caption = this.element.querySelector(`.${this.api.styles.input}`);
 
-      this._data.caption = caption ? caption.innerHTML : '';
+      this._data.caption = caption ? caption.innerHTML : "";
     }
 
     return this._data;
@@ -110,12 +110,12 @@ export default class Embed {
     return {
       baseClass: this.api.styles.block,
       input: this.api.styles.input,
-      container: 'embed-tool',
-      containerLoading: 'embed-tool--loading',
-      preloader: 'embed-tool__preloader',
-      caption: 'embed-tool__caption',
-      url: 'embed-tool__url',
-      content: 'embed-tool__content',
+      container: "embed-tool",
+      containerLoading: "embed-tool--loading",
+      preloader: "embed-tool__preloader",
+      caption: "embed-tool__caption",
+      url: "embed-tool__url",
+      content: "embed-tool__content",
     };
   }
 
@@ -126,7 +126,7 @@ export default class Embed {
    */
   render() {
     if (!this.data.service) {
-      const container = document.createElement('div');
+      const container = document.createElement("div");
 
       this.element = container;
 
@@ -134,22 +134,26 @@ export default class Embed {
     }
 
     const { html } = Embed.services[this.data.service];
-    const container = document.createElement('div');
-    const caption = document.createElement('div');
-    const template = document.createElement('template');
+    const container = document.createElement("div");
+    const caption = document.createElement("div");
+    const template = document.createElement("template");
     const preloader = this.createPreloader();
 
-    container.classList.add(this.CSS.baseClass, this.CSS.container, this.CSS.containerLoading);
+    container.classList.add(
+      this.CSS.baseClass,
+      this.CSS.container,
+      this.CSS.containerLoading
+    );
     caption.classList.add(this.CSS.input, this.CSS.caption);
 
     container.appendChild(preloader);
 
     caption.contentEditable = !this.readOnly;
-    caption.dataset.placeholder = 'Enter a caption';
-    caption.innerHTML = this.data.caption || '';
+    caption.dataset.placeholder = "Enter a caption";
+    caption.innerHTML = this.data.caption || "";
 
     template.innerHTML = html;
-    template.content.firstChild.setAttribute('src', this.data.embed);
+    template.content.firstChild.setAttribute("src", this.data.embed);
     template.content.firstChild.classList.add(this.CSS.content);
 
     const embedIsReady = this.embedIsReady(container);
@@ -157,10 +161,9 @@ export default class Embed {
     container.appendChild(template.content.firstChild);
     container.appendChild(caption);
 
-    embedIsReady
-      .then(() => {
-        container.classList.remove(this.CSS.containerLoading);
-      });
+    embedIsReady.then(() => {
+      container.classList.remove(this.CSS.containerLoading);
+    });
 
     this.element = container;
 
@@ -173,8 +176,8 @@ export default class Embed {
    * @returns {HTMLElement}
    */
   createPreloader() {
-    const preloader = document.createElement('preloader');
-    const url = document.createElement('div');
+    const preloader = document.createElement("preloader");
+    const url = document.createElement("div");
 
     url.textContent = this.data.source;
 
@@ -203,7 +206,13 @@ export default class Embed {
   onPaste(event) {
     const { key: service, data: url } = event.detail;
 
-    const { regex, embedUrl, width, height, id = (ids) => ids.shift() } = Embed.services[service];
+    const {
+      regex,
+      embedUrl,
+      width,
+      height,
+      id = (ids) => ids.shift(),
+    } = Embed.services[service];
     const result = regex.exec(url).slice(1);
     const embed = embedUrl.replace(/<%= remote_id %>/g, id(result));
 
@@ -226,34 +235,35 @@ export default class Embed {
 
     let entries = Object.entries(SERVICES);
 
-    const enabledServices = Object
-      .entries(services)
+    const enabledServices = Object.entries(services)
       .filter(([key, value]) => {
-        return typeof value === 'boolean' && value === true;
+        return typeof value === "boolean" && value === true;
       })
-      .map(([ key ]) => key);
+      .map(([key]) => key);
 
-    const userServices = Object
-      .entries(services)
+    const userServices = Object.entries(services)
       .filter(([key, value]) => {
-        return typeof value === 'object';
+        return typeof value === "object";
       })
       .filter(([key, service]) => Embed.checkServiceConfig(service))
       .map(([key, service]) => {
         const { regex, embedUrl, html, height, width, id } = service;
 
-        return [key, {
-          regex,
-          embedUrl,
-          html,
-          height,
-          width,
-          id,
-        } ];
+        return [
+          key,
+          {
+            regex,
+            embedUrl,
+            html,
+            height,
+            width,
+            id,
+          },
+        ];
       });
 
     if (enabledServices.length) {
-      entries = entries.filter(([ key ]) => enabledServices.includes(key));
+      entries = entries.filter(([key]) => enabledServices.includes(key));
     }
 
     entries = entries.concat(userServices);
@@ -270,12 +280,11 @@ export default class Embed {
       return result;
     }, {});
 
-    Embed.patterns = entries
-      .reduce((result, [key, item]) => {
-        result[key] = item.regex;
+    Embed.patterns = entries.reduce((result, [key, item]) => {
+      result[key] = item.regex;
 
-        return result;
-      }, {});
+      return result;
+    }, {});
   }
 
   /**
@@ -287,12 +296,17 @@ export default class Embed {
   static checkServiceConfig(config) {
     const { regex, embedUrl, html, height, width, id } = config;
 
-    let isValid = regex && regex instanceof RegExp &&
-      embedUrl && typeof embedUrl === 'string' &&
-      html && typeof html === 'string';
+    let isValid =
+      regex &&
+      regex instanceof RegExp &&
+      embedUrl &&
+      typeof embedUrl === "string" &&
+      html &&
+      typeof html === "string";
 
     isValid = isValid && (id !== undefined ? id instanceof Function : true);
-    isValid = isValid && (height !== undefined ? Number.isFinite(height) : true);
+    isValid =
+      isValid && (height !== undefined ? Number.isFinite(height) : true);
     isValid = isValid && (width !== undefined ? Number.isFinite(width) : true);
 
     return isValid;
