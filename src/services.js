@@ -16,9 +16,9 @@ export default {
     html: '<iframe style="width:100%;" height="320" frameborder="0" allowfullscreen></iframe>',
     height: 320,
     width: 580,
-    id: ([id, params]) => {
-      if (!params && id) {
-        return id;
+    serviceId: ([serviceId, params]) => {
+      if (!params && serviceId) {
+        return serviceId;
       }
 
       const paramsMap = {
@@ -36,8 +36,8 @@ export default {
         .map((param) => {
           const [name, value] = param.split("=");
 
-          if (!id && name === "v") {
-            id = value;
+          if (!serviceId && name === "v") {
+            serviceId = value;
 
             return null;
           }
@@ -50,7 +50,7 @@ export default {
         })
         .filter((param) => !!param);
 
-      return id + "?" + params.join("&");
+      return serviceId + "?" + params.join("&");
     },
   },
   coub: {
@@ -108,7 +108,7 @@ export default {
     html: '<iframe frameborder="0" style="border:none;width:540px;height:100px;" style="width:100%;" height="100"></iframe>',
     height: 100,
     width: 540,
-    id: (ids) => ids.join("/"),
+    serviceId: (serviceIds) => serviceIds.join("/"),
   },
   "yandex-music-playlist": {
     regex:
@@ -118,7 +118,7 @@ export default {
     html: '<iframe frameborder="0" style="border:none;width:540px;height:400px;" width="540" height="400"></iframe>',
     height: 400,
     width: 540,
-    id: (ids) => ids.join("/"),
+    serviceId: (serviceIds) => serviceIds.join("/"),
   },
   codepen: {
     regex: /https?:\/\/codepen\.io\/([^\/\?\&]*)\/pen\/([^\/\?\&]*)/,
@@ -127,7 +127,7 @@ export default {
     html: "<iframe height='300' scrolling='no' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%;'></iframe>",
     height: 300,
     width: 600,
-    id: (ids) => ids.join("/embed/"),
+    serviceId: (serviceIds) => serviceIds.join("/embed/"),
   },
   instagram: {
     regex: /https?:\/\/www\.instagram\.com\/p\/([^\/\?\&]+)\/?/,
@@ -144,14 +144,14 @@ export default {
     html: '<iframe width="600" height="600" style="margin: 0 auto;" frameborder="0" scrolling="no" allowtransparency="true"></iframe>',
     height: 300,
     width: 600,
-    id: (ids) => ids.join("/status/"),
+    serviceId: (serviceIds) => serviceIds.join("/status/"),
   },
   pinterest: {
     regex: /https?:\/\/([^\/\?\&]*).pinterest.com\/pin\/([^\/\?\&]*)\/?$/,
     embedUrl: "https://assets.pinterest.com/ext/embed.html?id=<%= remote_id %>",
     html: "<iframe scrolling='no' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%; min-height: 400px; max-height: 1000px;'></iframe>",
-    id: (ids) => {
-      return ids[1];
+    serviceId: (serviceIds) => {
+      return serviceIds[1];
     },
   },
   facebook: {
@@ -159,8 +159,8 @@ export default {
     embedUrl:
       "https://www.facebook.com/plugins/post.php?href=https://www.facebook.com/<%= remote_id %>&width=500",
     html: "<iframe scrolling='no' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%; min-height: 500px; max-height: 1000px;'></iframe>",
-    id: (ids) => {
-      return ids.join("/");
+    serviceId: (serviceIds) => {
+      return serviceIds.join("/");
     },
   },
   aparat: {
@@ -172,7 +172,7 @@ export default {
     width: 600,
   },
   loom: {
-    regex: /https?:\/\/(?:www.)?loom\.com\/share\/([^\/\?\&]+)(\?t=\d+)?/,
+    regex: /https?:\/\/(?:www.)?loom\.com\/share\/([^\/\?\&]+)(?:\?t=\d+)?/,
     embedUrl: "https://www.loom.com/embed/<%= remote_id %>",
     html: "<iframe width='600' height='300' frameborder='0' webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>",
     height: 300,

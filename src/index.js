@@ -18,9 +18,9 @@ import { debounce } from "debounce";
  * @typedef {object} Service
  * @description Service configuration object
  * @property {RegExp} regex - pattern of source URLs
- * @property {string} embedUrl - URL scheme to embedded page. Use '<%= remote_id %>' to define a place to insert resource id
+ * @property {string} embedUrl - URL scheme to embedded page. Use '<%= remote_id %>' to define a place to insert resource serviceId
  * @property {string} html - iframe which contains embedded content
- * @property {Function} [id] - function to get resource id from RegExp groups
+ * @property {Function} [serviceId] - function to get resource serviceId from RegExp groups
  */
 /**
  * @typedef {object} EmbedConfig
@@ -59,18 +59,19 @@ export default class Embed {
   /**
    * @param {EmbedData} data - embed data
    * @param {RegExp} [data.regex] - pattern of source URLs
-   * @param {string} [data.embedUrl] - URL scheme to embedded page. Use '<%= remote_id %>' to define a place to insert resource id
+   * @param {string} [data.embedUrl] - URL scheme to embedded page. Use '<%= remote_id %>' to define a place to insert resource serviceId
    * @param {string} [data.html] - iframe which contains embedded content
    * @param {number} [data.height] - iframe height
    * @param {number} [data.width] - iframe width
    * @param {string} [data.caption] - caption
+   * @param {string} [data.id] - Omniblox block id
    */
   set data(data) {
     if (!(data instanceof Object)) {
       throw Error("Embed Tool data should be object");
     }
 
-    const { service, source, embed, width, height, caption = "" } = data;
+    const { service, source, embed, width, height, caption = "", id } = data;
 
     this._data = {
       service: service || this.data.service,
@@ -79,6 +80,7 @@ export default class Embed {
       width: width || this.data.width,
       height: height || this.data.height,
       caption: caption || this.data.caption || "",
+      id: id || this.data.id,
     };
 
     const oldView = this.element;
@@ -211,10 +213,10 @@ export default class Embed {
       embedUrl,
       width,
       height,
-      id = (ids) => ids.shift(),
+      serviceId = (serviceIds) => serviceIds.shift(),
     } = Embed.services[service];
     const result = regex.exec(url).slice(1);
-    const embed = embedUrl.replace(/<%= remote_id %>/g, id(result));
+    const embed = embedUrl.replace(/<%= remote_id %>/g, serviceId(result));
 
     this.data = {
       service,
@@ -247,7 +249,7 @@ export default class Embed {
       })
       .filter(([key, service]) => Embed.checkServiceConfig(service))
       .map(([key, service]) => {
-        const { regex, embedUrl, html, height, width, id } = service;
+        const { regex, embedUrl, html, height, width, serviceId } = service;
 
         return [
           key,
@@ -257,7 +259,7 @@ export default class Embed {
             html,
             height,
             width,
-            id,
+            serviceId,
           },
         ];
       });
@@ -294,7 +296,7 @@ export default class Embed {
    * @returns {boolean}
    */
   static checkServiceConfig(config) {
-    const { regex, embedUrl, html, height, width, id } = config;
+    const { regex, embedUrl, html, height, width, serviceId } = config;
 
     let isValid =
       regex &&
@@ -304,7 +306,9 @@ export default class Embed {
       html &&
       typeof html === "string";
 
-    isValid = isValid && (id !== undefined ? id instanceof Function : true);
+    isValid =
+      isValid &&
+      (serviceId !== undefined ? serviceId instanceof Function : true);
     isValid =
       isValid && (height !== undefined ? Number.isFinite(height) : true);
     isValid = isValid && (width !== undefined ? Number.isFinite(width) : true);
