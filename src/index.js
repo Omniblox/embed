@@ -71,7 +71,16 @@ export default class Embed {
       throw Error("Embed Tool data should be object");
     }
 
-    const { service, source, embed, width, height, caption = "", id } = data;
+    const {
+      service,
+      source,
+      embed,
+      width,
+      height,
+      description = "",
+      caption = "",
+      id,
+    } = data;
 
     this._data = {
       service: service || this.data.service,
@@ -80,6 +89,7 @@ export default class Embed {
       width: width || this.data.width,
       height: height || this.data.height,
       caption: caption || this.data.caption || "",
+      description: description || this.data.description,
       id: id || this.data.id,
     };
 
@@ -213,6 +223,7 @@ export default class Embed {
       embedUrl,
       width,
       height,
+      description,
       serviceId = (serviceIds) => serviceIds.shift(),
     } = Embed.services[service];
     const result = regex.exec(url).slice(1);
@@ -224,6 +235,7 @@ export default class Embed {
       embed,
       width,
       height,
+      description,
     };
   }
 
@@ -249,7 +261,8 @@ export default class Embed {
       })
       .filter(([key, service]) => Embed.checkServiceConfig(service))
       .map(([key, service]) => {
-        const { regex, embedUrl, html, height, width, serviceId } = service;
+        const { regex, embedUrl, html, height, width, description, serviceId } =
+          service;
 
         return [
           key,
@@ -259,6 +272,7 @@ export default class Embed {
             html,
             height,
             width,
+            description,
             serviceId,
           },
         ];

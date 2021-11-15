@@ -8,6 +8,7 @@ export default {
     html: '<iframe style="width:100%;" height="320" frameborder="0"></iframe>',
     height: 320,
     width: 580,
+    description: "vimeo video",
   },
   youtube: {
     regex:
@@ -16,6 +17,7 @@ export default {
     html: '<iframe style="width:100%;" height="320" frameborder="0" allowfullscreen></iframe>',
     height: 320,
     width: 580,
+    description: "youtube video",
     serviceId: ([serviceId, params]) => {
       if (!params && serviceId) {
         return serviceId;
@@ -59,6 +61,7 @@ export default {
     html: '<iframe style="width:100%;" height="320" frameborder="0" allowfullscreen></iframe>',
     height: 320,
     width: 580,
+    description: "coub video",
   },
   vine: {
     regex: /https?:\/\/vine\.co\/v\/([^\/\?\&]+)/,
@@ -66,6 +69,7 @@ export default {
     html: '<iframe style="width:100%;" height="320" frameborder="0" allowfullscreen></iframe>',
     height: 320,
     width: 580,
+    description: "vine video",
   },
   imgur: {
     regex: /https?:\/\/(?:i\.)?imgur\.com.*\/([a-zA-Z0-9]+)(?:\.gifv)?/,
@@ -80,6 +84,7 @@ export default {
     html: "<iframe frameborder='0' scrolling='no' style=\"width:100%;\" height='436' allowfullscreen ></iframe>",
     height: 436,
     width: 580,
+    description: "gfycat image",
   },
   "twitch-channel": {
     regex: /https?:\/\/www\.twitch\.tv\/([^\/\?\&]*)\/?$/,
@@ -87,6 +92,7 @@ export default {
     html: '<iframe frameborder="0" allowfullscreen="true" scrolling="no" height="366" style="width:100%;"></iframe>',
     height: 366,
     width: 600,
+    description: "twitch channel",
   },
   "twitch-video": {
     regex: /https?:\/\/www\.twitch\.tv\/(?:[^\/\?\&]*\/v|videos)\/([0-9]*)/,
@@ -94,6 +100,7 @@ export default {
     html: '<iframe frameborder="0" allowfullscreen="true" scrolling="no" height="366" style="width:100%;"></iframe>',
     height: 366,
     width: 600,
+    description: "twitch video",
   },
   "yandex-music-album": {
     regex: /https?:\/\/music\.yandex\.ru\/album\/([0-9]*)\/?$/,
@@ -101,6 +108,7 @@ export default {
     html: '<iframe frameborder="0" style="border:none;width:540px;height:400px;" style="width:100%;" height="400"></iframe>',
     height: 400,
     width: 540,
+    description: "yandex music album",
   },
   "yandex-music-track": {
     regex: /https?:\/\/music\.yandex\.ru\/album\/([0-9]*)\/track\/([0-9]*)/,
@@ -108,6 +116,7 @@ export default {
     html: '<iframe frameborder="0" style="border:none;width:540px;height:100px;" style="width:100%;" height="100"></iframe>',
     height: 100,
     width: 540,
+    description: "yandex music track",
     serviceId: (serviceIds) => serviceIds.join("/"),
   },
   "yandex-music-playlist": {
@@ -118,6 +127,7 @@ export default {
     html: '<iframe frameborder="0" style="border:none;width:540px;height:400px;" width="540" height="400"></iframe>',
     height: 400,
     width: 540,
+    description: "yandex music playlist",
     serviceId: (serviceIds) => serviceIds.join("/"),
   },
   codepen: {
@@ -127,6 +137,7 @@ export default {
     html: "<iframe height='300' scrolling='no' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%;'></iframe>",
     height: 300,
     width: 600,
+    description: "code pen",
     serviceId: (serviceIds) => serviceIds.join("/embed/"),
   },
   instagram: {
@@ -135,6 +146,7 @@ export default {
     html: '<iframe width="400" height="505" style="margin: 0 auto;" frameborder="0" scrolling="no" allowtransparency="true"></iframe>',
     height: 505,
     width: 400,
+    description: "instagram image",
   },
   twitter: {
     regex:
@@ -144,12 +156,14 @@ export default {
     html: '<iframe width="600" height="600" style="margin: 0 auto;" frameborder="0" scrolling="no" allowtransparency="true"></iframe>',
     height: 300,
     width: 600,
+    description: "tweet",
     serviceId: (serviceIds) => serviceIds.join("/status/"),
   },
   pinterest: {
     regex: /https?:\/\/([^\/\?\&]*).pinterest.com\/pin\/([^\/\?\&]*)\/?$/,
     embedUrl: "https://assets.pinterest.com/ext/embed.html?id=<%= remote_id %>",
     html: "<iframe scrolling='no' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%; min-height: 400px; max-height: 1000px;'></iframe>",
+    description: "pinterest pin",
     serviceId: (serviceIds) => {
       return serviceIds[1];
     },
@@ -159,6 +173,8 @@ export default {
     embedUrl:
       "https://www.facebook.com/plugins/post.php?href=https://www.facebook.com/<%= remote_id %>&width=500",
     html: "<iframe scrolling='no' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%; min-height: 500px; max-height: 1000px;'></iframe>",
+
+    description: "facebook post",
     serviceId: (serviceIds) => {
       return serviceIds.join("/");
     },
@@ -170,6 +186,7 @@ export default {
     html: '<iframe width="600" height="300" style="margin: 0 auto;" frameborder="0" scrolling="no" allowtransparency="true"></iframe>',
     height: 300,
     width: 600,
+    description: "aparat video",
   },
   loom: {
     regex: /https?:\/\/(?:www.)?loom\.com\/share\/([^\/\?\&]+)(?:\?t=\d+)?/,
@@ -177,5 +194,6 @@ export default {
     html: "<iframe width='600' height='300' frameborder='0' webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>",
     height: 300,
     width: 600,
+    description: "loom video",
   },
 };
