@@ -189,7 +189,7 @@ export default {
     description: "aparat video",
   },
   loom: {
-    regex: /https?:\/\/(?:www.)?loom\.com\/share\/([^\/\?\&]+)(?:\?t=\d+)?/,
+    regex: /https?:\/\/(?:www\.)?loom\.com\/share\/([^\/\?\&]+)(?:\?t=\d+)?/,
     embedUrl: "https://www.loom.com/embed/<%= remote_id %>",
     html: "<iframe width='600' height='300' frameborder='0' webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>",
     height: 300,
